@@ -3,46 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Uhrskov Vinhandel · Det Digitale Vinkompas</title>
+  <title>Uhrskov Vine · Find din vin — Det Digitale Vinkompas</title>
 
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts: elegant serif til overskrifter + ren sans til brødtekst -->
+  <!-- Fonts: Playfair Display (serif, som sitets overskrifter) + Inter (sans) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            bordeaux: {
-              DEFAULT: '#6b1f2a',
-              dark: '#4a121b',
-              deep: '#3a0e15',
-              light: '#8a3340',
-            },
-            sand: {
-              DEFAULT: '#f5ecdd',
-              light: '#fbf6ec',
-              dark: '#e7d8bf',
-            },
-            koks: '#2b2a28',
-            gold: {
-              DEFAULT: '#c8a45a',
-              light: '#e3c987',
-              dark: '#a4823c',
-            },
+            wine:   { DEFAULT: '#8b2331', dark: '#6e1822', deep: '#561019', light: '#a83341' },
+            forest: { DEFAULT: '#4e7d3e', dark: '#3f6631' },
+            yolk:   { DEFAULT: '#f5d000', dark: '#e0bd00' },
+            cream:  '#faefe0',
+            ink:    '#1a1a1a',
+            gold:   { DEFAULT: '#b8902f', light: '#c8a45a', dark: '#9a7726' },
+            paper:  '#f7f6f3',
           },
           fontFamily: {
-            serif: ['"Cormorant Garamond"', 'serif'],
-            sans: ['Inter', 'sans-serif'],
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans:  ['Inter', 'system-ui', 'sans-serif'],
           },
           boxShadow: {
-            soft: '0 10px 40px -12px rgba(58, 14, 21, 0.25)',
-            card: '0 18px 50px -18px rgba(58, 14, 21, 0.35)',
+            soft: '0 6px 24px -10px rgba(26,26,26,0.18)',
+            card: '0 14px 40px -16px rgba(26,26,26,0.28)',
           },
         },
       },
@@ -51,160 +41,147 @@
 
   <style>
     html { scroll-behavior: smooth; }
-    body {
-      background:
-        radial-gradient(1200px 600px at 50% -10%, #fbf6ec 0%, #f5ecdd 45%, #efe2cb 100%);
+    body { background: #ffffff; }
+
+    /* Logo-vinring */
+    .wine-ring {
+      display: inline-block;
+      width: 0.92em; height: 0.92em;
+      border: 2px solid #8b2331;
+      border-radius: 50%;
+      transform: translateY(0.06em) rotate(-12deg);
+      box-shadow: inset 0 0 0 1px rgba(139,35,49,0.25);
     }
 
     /* Skærm-overgange */
-    .screen {
-      display: none;
-      animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
+    .screen { display: none; animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both; }
     .screen.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pop { 0% { opacity: 0; transform: translateY(16px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+    .pop { animation: pop 0.5s cubic-bezier(0.22,1,0.36,1) both; }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes pop {
-      0%   { opacity: 0; transform: translateY(18px) scale(0.97); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .pop { animation: pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
-
-    /* ---- Custom range sliders ---- */
+    /* Range sliders */
     input[type="range"].vino {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 100%;
-      height: 10px;
-      border-radius: 9999px;
-      background: linear-gradient(90deg, #e7d8bf, #d9c39f);
-      outline: none;
-      transition: opacity 0.3s ease;
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 8px; border-radius: 9999px;
+      background: linear-gradient(90deg, #efe7da, #e2d6c2);
+      outline: none; transition: opacity 0.3s ease;
     }
     input[type="range"].vino::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      cursor: pointer;
-      background: radial-gradient(circle at 35% 30%, #8a3340, #6b1f2a 60%, #4a121b);
-      border: 3px solid #f5ecdd;
-      box-shadow: 0 4px 12px rgba(58, 14, 21, 0.45), 0 0 0 2px rgba(200, 164, 90, 0.6);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      -webkit-appearance: none; appearance: none;
+      width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+      background: radial-gradient(circle at 35% 30%, #a83341, #8b2331 60%, #6e1822);
+      border: 3px solid #fff;
+      box-shadow: 0 3px 10px rgba(86,16,25,0.4), 0 0 0 1px rgba(184,144,47,0.5);
+      transition: transform 0.15s ease;
     }
     input[type="range"].vino::-webkit-slider-thumb:hover { transform: scale(1.12); }
-    input[type="range"].vino::-webkit-slider-thumb:active { transform: scale(0.96); }
+    input[type="range"].vino::-webkit-slider-thumb:active { transform: scale(0.95); }
     input[type="range"].vino::-moz-range-thumb {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      cursor: pointer;
-      background: radial-gradient(circle at 35% 30%, #8a3340, #6b1f2a 60%, #4a121b);
-      border: 3px solid #f5ecdd;
-      box-shadow: 0 4px 12px rgba(58, 14, 21, 0.45), 0 0 0 2px rgba(200, 164, 90, 0.6);
+      width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+      background: radial-gradient(circle at 35% 30%, #a83341, #8b2331 60%, #6e1822);
+      border: 3px solid #fff; box-shadow: 0 3px 10px rgba(86,16,25,0.4);
     }
-    input[type="range"].vino:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-    input[type="range"].vino:disabled::-webkit-slider-thumb { cursor: not-allowed; }
+    input[type="range"].vino:disabled { opacity: 0.4; cursor: not-allowed; }
 
     /* CSS-vinflaske */
-    .bottle {
-      position: relative;
-      width: 46px;
-      height: 132px;
-      margin: 0 auto;
-    }
-    .bottle .neck {
-      position: absolute;
-      top: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 16px; height: 46px;
-      background: linear-gradient(90deg, #3a0e15, #6b1f2a 45%, #3a0e15);
-      border-radius: 6px 6px 2px 2px;
-    }
-    .bottle .cap {
-      position: absolute;
-      top: -6px; left: 50%;
-      transform: translateX(-50%);
-      width: 18px; height: 12px;
-      background: linear-gradient(90deg, #a4823c, #e3c987 50%, #a4823c);
-      border-radius: 4px;
-    }
-    .bottle .body {
-      position: absolute;
-      bottom: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 46px; height: 96px;
-      background: linear-gradient(90deg, #3a0e15, #6b1f2a 45%, #8a3340 55%, #3a0e15);
-      border-radius: 14px 14px 10px 10px;
-      box-shadow: inset -4px 0 8px rgba(0,0,0,0.35), inset 4px 0 6px rgba(255,255,255,0.08);
-    }
-    .bottle .label {
-      position: absolute;
-      bottom: 22px; left: 50%;
-      transform: translateX(-50%);
-      width: 38px; height: 46px;
-      background: linear-gradient(180deg, #fbf6ec, #efe2cb);
-      border-radius: 3px;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-    }
-    .bottle .label::after {
-      content: "";
-      width: 22px; height: 22px;
-      border: 1.5px solid #c8a45a;
-      border-radius: 50%;
-    }
+    .bottle { position: relative; width: 44px; height: 128px; margin: 0 auto; }
+    .bottle .neck { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 15px; height: 44px; background: linear-gradient(90deg, #3a0e15, #6b1f2a 45%, #3a0e15); border-radius: 6px 6px 2px 2px; }
+    .bottle .cap  { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 17px; height: 11px; background: linear-gradient(90deg, #9a7726, #c8a45a 50%, #9a7726); border-radius: 4px; }
+    .bottle .body { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 44px; height: 92px; background: linear-gradient(90deg, #3a0e15, #6b1f2a 45%, #8a3340 55%, #3a0e15); border-radius: 13px 13px 9px 9px; box-shadow: inset -4px 0 8px rgba(0,0,0,0.35), inset 4px 0 6px rgba(255,255,255,0.08); }
+    .bottle .label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 36px; height: 44px; background: linear-gradient(180deg, #fbf6ec, #efe2cb); border-radius: 3px; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    .bottle .label::after { content: ""; width: 20px; height: 20px; border: 1.5px solid #b8902f; border-radius: 50%; }
 
-    .spinner {
-      width: 22px; height: 22px;
-      border: 3px solid rgba(255,255,255,0.35);
-      border-top-color: #e3c987;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
+    .spinner { width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.35); border-top-color: #f5d000; border-radius: 50%; animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Stepper progress */
     .step-dot { transition: all 0.35s ease; }
   </style>
 </head>
 
-<body class="font-sans text-koks min-h-screen antialiased">
+<body class="font-sans text-ink antialiased">
+
+  <!-- ====================== PROMO-BJÆLKE ====================== -->
+  <div class="bg-cream text-ink/80 text-[13px]">
+    <div class="max-w-6xl mx-auto px-4 py-2.5 flex flex-wrap justify-center md:justify-between gap-x-6 gap-y-1">
+      <span><span class="text-forest font-semibold">✓</span> <strong class="text-ink">Gratis fragt</strong> ved køb over 599,-*</span>
+      <span class="hidden sm:inline"><span class="text-forest font-semibold">✓</span> <strong class="text-ink">Hurtig levering</strong> – 1-3 hverdage på lagervarer</span>
+      <span class="hidden lg:inline"><span class="text-forest font-semibold">✓</span> <strong class="text-ink">På Bredgade siden 1912</strong></span>
+      <span class="hidden lg:inline"><span class="text-forest font-semibold">✓</span> <strong class="text-ink">Dedikeret til vin</strong> – Gennem 4 generationer</span>
+    </div>
+  </div>
 
   <!-- ====================== HEADER ====================== -->
-  <header class="text-center pt-10 pb-2 px-4">
-    <div class="inline-flex items-center gap-2 text-gold-dark tracking-[0.35em] text-[11px] uppercase font-medium">
-      <span class="w-8 h-px bg-gold/60"></span>
-      Uhrskov Vinhandel · Siden 1883
-      <span class="w-8 h-px bg-gold/60"></span>
+  <header class="border-b border-ink/10">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center gap-4">
+      <!-- Søgefelt -->
+      <div class="hidden md:flex flex-1 max-w-sm items-stretch rounded-md overflow-hidden border border-ink/15">
+        <input type="text" placeholder="Find produkter og kategorier" class="flex-1 px-4 text-sm outline-none" />
+        <button class="bg-wine text-white px-5 text-sm font-medium hover:bg-wine-dark transition-colors">Søg</button>
+      </div>
+
+      <!-- Logo -->
+      <a href="#" class="flex-1 md:flex-none text-center md:mx-auto">
+        <span class="font-serif text-2xl md:text-3xl tracking-[0.18em] text-ink font-600">
+          UHRSKOV <span class="wine-ring"></span> VINE
+        </span>
+      </a>
+
+      <!-- Kurv -->
+      <div class="flex-1 flex justify-end items-center">
+        <div class="flex items-center gap-2 border border-ink/15 rounded-md px-4 py-2">
+          <span class="relative text-xl">🛒
+            <span class="absolute -top-2 -right-2 bg-forest text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+          </span>
+          <div class="hidden sm:block leading-tight">
+            <div class="text-sm font-semibold">Indkøbskurv</div>
+            <div class="text-[11px] text-forest">Gratis fragt over 599,-*</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <h1 class="font-serif text-4xl md:text-5xl text-bordeaux mt-3 font-700">Det Digitale Vinkompas</h1>
-    <p class="text-koks/60 mt-1 text-sm md:text-base">Stemning &amp; Smag — find din næste yndlingsvin</p>
+
+    <!-- Hovednavigation -->
+    <nav class="border-t border-ink/10">
+      <div class="max-w-6xl mx-auto px-4 flex flex-wrap justify-center gap-x-1 gap-y-1 py-2 text-[15px] font-medium">
+        <a href="#" class="px-3 py-1.5 rounded hover:text-wine transition-colors">Outlet</a>
+        <a href="#" class="px-3 py-1.5 rounded hover:text-wine transition-colors">Rødvin</a>
+        <a href="#" class="px-3 py-1.5 rounded hover:text-wine transition-colors">Hvidvin</a>
+        <a href="#" class="px-3 py-1.5 rounded hover:text-wine transition-colors">Bobler</a>
+        <a href="#" class="px-3 py-1.5 rounded hover:text-wine transition-colors">Andre Vintyper</a>
+        <a href="#" class="px-3 py-1.5 rounded hover:text-wine transition-colors">Spiritus</a>
+        <a href="#" class="px-3 py-1.5 rounded hover:text-wine transition-colors hidden sm:inline">Glas &amp; Tilbehør</a>
+        <a href="#" class="px-3 py-1.5 rounded bg-yolk text-ink font-semibold">Find din vin</a>
+      </div>
+    </nav>
   </header>
 
+  <!-- ====================== MODUL-INTRO ====================== -->
+  <div class="bg-paper border-b border-ink/10">
+    <div class="max-w-6xl mx-auto px-4 py-10 text-center">
+      <div class="inline-flex items-center gap-2 text-wine tracking-[0.3em] text-[11px] uppercase font-semibold">
+        <span class="w-8 h-px bg-wine/40"></span>Stemning &amp; Smag<span class="w-8 h-px bg-wine/40"></span>
+      </div>
+      <h1 class="font-serif text-4xl md:text-5xl text-ink mt-3 font-700">Det Digitale Vinkompas</h1>
+      <p class="text-ink/60 mt-2 text-base">Lad sommelieren guide dig — find din næste yndlingsvin på under et minut.</p>
+    </div>
+  </div>
+
   <!-- ====================== STEPPER ====================== -->
-  <div class="flex justify-center items-center gap-3 my-6" id="stepper">
+  <div class="flex justify-center items-center gap-3 my-7 px-4" id="stepper">
     <div class="flex items-center gap-2">
-      <span data-dot="1" class="step-dot w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold bg-bordeaux text-sand">1</span>
-      <span class="hidden sm:inline text-xs text-koks/50 uppercase tracking-wider">Stemning</span>
+      <span data-dot="1" class="step-dot w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold bg-wine text-white">1</span>
+      <span class="hidden sm:inline text-xs text-ink/50 uppercase tracking-wider">Stemning</span>
     </div>
-    <span class="w-8 h-px bg-koks/20"></span>
+    <span class="w-8 h-px bg-ink/20"></span>
     <div class="flex items-center gap-2">
-      <span data-dot="2" class="step-dot w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold bg-koks/10 text-koks/50">2</span>
-      <span class="hidden sm:inline text-xs text-koks/50 uppercase tracking-wider">Finjuster</span>
+      <span data-dot="2" class="step-dot w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold bg-ink/10 text-ink/50">2</span>
+      <span class="hidden sm:inline text-xs text-ink/50 uppercase tracking-wider">Finjuster</span>
     </div>
-    <span class="w-8 h-px bg-koks/20"></span>
+    <span class="w-8 h-px bg-ink/20"></span>
     <div class="flex items-center gap-2">
-      <span data-dot="3" class="step-dot w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold bg-koks/10 text-koks/50">3</span>
-      <span class="hidden sm:inline text-xs text-koks/50 uppercase tracking-wider">Resultat</span>
+      <span data-dot="3" class="step-dot w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold bg-ink/10 text-ink/50">3</span>
+      <span class="hidden sm:inline text-xs text-ink/50 uppercase tracking-wider">Resultat</span>
     </div>
   </div>
 
@@ -215,65 +192,64 @@
     <!-- ============================================================= -->
     <section id="screen-1" class="screen active">
       <div class="text-center mb-8">
-        <h2 class="font-serif text-3xl md:text-4xl text-koks font-600">Hvad er planen for flasken?</h2>
-        <p class="text-koks/60 mt-2">Vælg den stemning eller anledning, der passer til din aften.</p>
+        <h2 class="font-serif text-3xl md:text-4xl text-ink font-600">Hvad er planen for flasken?</h2>
+        <p class="text-ink/60 mt-2">Vælg den stemning eller anledning, der passer til din aften.</p>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <!-- Kort: Sofahygge -->
         <button data-mood="sofa"
-          class="mood-card group text-left bg-sand-light border border-gold/20 rounded-2xl p-6 shadow-soft hover:shadow-card hover:-translate-y-1 hover:border-gold/50 transition-all duration-300">
+          class="mood-card group text-left bg-white border border-ink/10 rounded-lg p-6 shadow-soft hover:shadow-card hover:-translate-y-1 hover:border-wine/40 transition-all duration-300">
           <div class="flex items-start gap-4">
-            <span class="text-4xl drop-shadow">🛋️</span>
+            <span class="text-4xl">🛋️</span>
             <div>
-              <h3 class="font-serif text-2xl text-bordeaux font-600">Sofahygge &amp; Netflix</h3>
-              <p class="text-sm text-koks/60 mt-1">En blød, fyldig rødvin der krammer dig på sofaen.</p>
+              <h3 class="font-serif text-2xl text-wine font-600">Sofahygge &amp; Netflix</h3>
+              <p class="text-sm text-ink/60 mt-1">En blød, fyldig rødvin der krammer dig på sofaen.</p>
             </div>
           </div>
         </button>
 
         <!-- Kort: Den gode middag -->
         <button data-mood="middag"
-          class="mood-card group text-left bg-sand-light border border-gold/20 rounded-2xl p-6 shadow-soft hover:shadow-card hover:-translate-y-1 hover:border-gold/50 transition-all duration-300">
+          class="mood-card group text-left bg-white border border-ink/10 rounded-lg p-6 shadow-soft hover:shadow-card hover:-translate-y-1 hover:border-wine/40 transition-all duration-300">
           <div class="flex items-start gap-4">
-            <span class="text-4xl drop-shadow">🍽️</span>
+            <span class="text-4xl">🍽️</span>
             <div>
-              <h3 class="font-serif text-2xl text-bordeaux font-600">Den gode middag</h3>
-              <p class="text-sm text-koks/60 mt-1">Den helt rigtige ledsager til aftenens menu.</p>
+              <h3 class="font-serif text-2xl text-wine font-600">Den gode middag</h3>
+              <p class="text-sm text-ink/60 mt-1">Den helt rigtige ledsager til aftenens menu.</p>
             </div>
           </div>
 
-          <!-- Sekundær valgmulighed -->
-          <div data-submenu class="hidden mt-5 pt-4 border-t border-gold/20">
-            <p class="text-xs uppercase tracking-wider text-koks/50 mb-3">Hvad serverer du?</p>
+          <div data-submenu class="hidden mt-5 pt-4 border-t border-ink/10">
+            <p class="text-xs uppercase tracking-wider text-ink/50 mb-3">Hvad serverer du?</p>
             <div class="flex gap-2">
-              <span data-food="kød"     class="food-chip flex-1 text-center text-sm py-2 rounded-lg border border-bordeaux/30 text-bordeaux hover:bg-bordeaux hover:text-sand transition-all duration-300">🥩 Kød</span>
-              <span data-food="fisk"    class="food-chip flex-1 text-center text-sm py-2 rounded-lg border border-bordeaux/30 text-bordeaux hover:bg-bordeaux hover:text-sand transition-all duration-300">🐟 Fisk</span>
-              <span data-food="vegetar" class="food-chip flex-1 text-center text-sm py-2 rounded-lg border border-bordeaux/30 text-bordeaux hover:bg-bordeaux hover:text-sand transition-all duration-300">🥗 Vegetar</span>
+              <span data-food="kød"     class="food-chip flex-1 text-center text-sm py-2 rounded-md border border-wine/30 text-wine hover:bg-wine hover:text-white transition-all duration-300">🥩 Kød</span>
+              <span data-food="fisk"    class="food-chip flex-1 text-center text-sm py-2 rounded-md border border-wine/30 text-wine hover:bg-wine hover:text-white transition-all duration-300">🐟 Fisk</span>
+              <span data-food="vegetar" class="food-chip flex-1 text-center text-sm py-2 rounded-md border border-wine/30 text-wine hover:bg-wine hover:text-white transition-all duration-300">🥗 Vegetar</span>
             </div>
           </div>
         </button>
 
         <!-- Kort: Imponer svigerforældrene -->
         <button data-mood="imponer"
-          class="mood-card group text-left bg-sand-light border border-gold/20 rounded-2xl p-6 shadow-soft hover:shadow-card hover:-translate-y-1 hover:border-gold/50 transition-all duration-300">
+          class="mood-card group text-left bg-white border border-ink/10 rounded-lg p-6 shadow-soft hover:shadow-card hover:-translate-y-1 hover:border-wine/40 transition-all duration-300">
           <div class="flex items-start gap-4">
-            <span class="text-4xl drop-shadow">🥂</span>
+            <span class="text-4xl">🥂</span>
             <div>
-              <h3 class="font-serif text-2xl text-bordeaux font-600">Imponer svigerforældrene</h3>
-              <p class="text-sm text-koks/60 mt-1">Klassiske, elegante vine der vækker respekt.</p>
+              <h3 class="font-serif text-2xl text-wine font-600">Imponer svigerforældrene</h3>
+              <p class="text-sm text-ink/60 mt-1">Klassiske, elegante vine der vækker respekt.</p>
             </div>
           </div>
         </button>
 
         <!-- Kort: Hverdagsluksus -->
         <button data-mood="hverdag"
-          class="mood-card group text-left bg-sand-light border border-gold/20 rounded-2xl p-6 shadow-soft hover:shadow-card hover:-translate-y-1 hover:border-gold/50 transition-all duration-300">
+          class="mood-card group text-left bg-white border border-ink/10 rounded-lg p-6 shadow-soft hover:shadow-card hover:-translate-y-1 hover:border-wine/40 transition-all duration-300">
           <div class="flex items-start gap-4">
-            <span class="text-4xl drop-shadow">✨</span>
+            <span class="text-4xl">✨</span>
             <div>
-              <h3 class="font-serif text-2xl text-bordeaux font-600">Hverdagsluksus</h3>
-              <p class="text-sm text-koks/60 mt-1">Alsidige vine med god værdi for pengene.</p>
+              <h3 class="font-serif text-2xl text-wine font-600">Hverdagsluksus</h3>
+              <p class="text-sm text-ink/60 mt-1">Alsidige vine med god værdi for pengene.</p>
             </div>
           </div>
         </button>
@@ -285,61 +261,50 @@
     <!-- ============================================================= -->
     <section id="screen-2" class="screen">
       <div class="text-center mb-8">
-        <h2 class="font-serif text-3xl md:text-4xl text-koks font-600">Finjuster din smag</h2>
-        <p class="text-koks/60 mt-2 max-w-xl mx-auto">Vi har indstillet kompasset efter dit humør. Tilpas det, så det rammer dine smagsløg spot-on.</p>
-        <div id="mood-badge" class="inline-flex items-center gap-2 mt-4 px-4 py-1.5 rounded-full bg-bordeaux/10 text-bordeaux text-sm font-medium"></div>
+        <h2 class="font-serif text-3xl md:text-4xl text-ink font-600">Finjuster din smag</h2>
+        <p class="text-ink/60 mt-2 max-w-xl mx-auto">Vi har indstillet kompasset efter dit humør. Tilpas det, så det rammer dine smagsløg spot-on.</p>
+        <div id="mood-badge" class="inline-flex items-center gap-2 mt-4 px-4 py-1.5 rounded-full bg-wine/10 text-wine text-sm font-medium"></div>
       </div>
 
-      <div class="bg-sand-light border border-gold/20 rounded-3xl p-7 md:p-10 shadow-soft space-y-10">
-
-        <!-- Skyder 1: Kraft & Fyldighed -->
+      <div class="bg-white border border-ink/10 rounded-xl p-7 md:p-10 shadow-soft space-y-10">
+        <!-- Skyder 1 -->
         <div>
           <div class="flex justify-between items-baseline mb-3">
-            <label class="font-serif text-xl text-bordeaux font-600">Kraft &amp; Fyldighed</label>
-            <span data-out="body" class="text-sm font-medium text-gold-dark"></span>
+            <label class="font-serif text-xl text-wine font-600">Kraft &amp; Fyldighed</label>
+            <span data-out="body" class="text-sm font-semibold text-gold-dark"></span>
           </div>
           <input id="slider-body" type="range" min="0" max="100" value="50" class="vino" />
-          <div class="flex justify-between text-xs text-koks/50 mt-2">
-            <span>Let &amp; Frisk</span><span>Kraftig &amp; Tung</span>
-          </div>
+          <div class="flex justify-between text-xs text-ink/50 mt-2"><span>Let &amp; Frisk</span><span>Kraftig &amp; Tung</span></div>
         </div>
 
-        <!-- Skyder 2: Sødme vs. Syre -->
+        <!-- Skyder 2 -->
         <div>
           <div class="flex justify-between items-baseline mb-3">
-            <label class="font-serif text-xl text-bordeaux font-600">Sødme vs. Syre</label>
-            <span data-out="sweet" class="text-sm font-medium text-gold-dark"></span>
+            <label class="font-serif text-xl text-wine font-600">Sødme vs. Syre</label>
+            <span data-out="sweet" class="text-sm font-semibold text-gold-dark"></span>
           </div>
           <input id="slider-sweet" type="range" min="0" max="100" value="50" class="vino" />
-          <div class="flex justify-between text-xs text-koks/50 mt-2">
-            <span>Knastør</span><span>Blød &amp; Frugtsød</span>
-          </div>
+          <div class="flex justify-between text-xs text-ink/50 mt-2"><span>Knastør</span><span>Blød &amp; Frugtsød</span></div>
         </div>
 
-        <!-- Skyder 3: Garvesyre / Tannin -->
+        <!-- Skyder 3 -->
         <div id="tannin-wrap">
           <div class="flex justify-between items-baseline mb-1">
-            <label class="font-serif text-xl text-bordeaux font-600">Garvesyre (Tannin)</label>
-            <span data-out="tannin" class="text-sm font-medium text-gold-dark"></span>
+            <label class="font-serif text-xl text-wine font-600">Garvesyre (Tannin)</label>
+            <span data-out="tannin" class="text-sm font-semibold text-gold-dark"></span>
           </div>
-          <p class="text-xs text-koks/50 mb-3">Hvor meget 'bid' skal der være i vinen?</p>
+          <p class="text-xs text-ink/50 mb-3">Hvor meget 'bid' skal der være i vinen?</p>
           <input id="slider-tannin" type="range" min="0" max="100" value="50" class="vino" />
-          <div class="flex justify-between text-xs text-koks/50 mt-2">
-            <span>Silkeblød</span><span>Masser af struktur/bid</span>
-          </div>
-          <p id="tannin-note" class="hidden mt-3 text-xs text-bordeaux bg-bordeaux/5 border border-bordeaux/15 rounded-lg px-3 py-2">
+          <div class="flex justify-between text-xs text-ink/50 mt-2"><span>Silkeblød</span><span>Masser af struktur/bid</span></div>
+          <p id="tannin-note" class="hidden mt-3 text-xs text-wine bg-wine/5 border border-wine/15 rounded-md px-3 py-2">
             🐟 Du valgte fisk — vi anbefaler en frisk hvidvin, så garvesyren er slået fra.
           </p>
         </div>
       </div>
 
       <div class="flex flex-col sm:flex-row gap-3 mt-8">
-        <button id="back-to-1"
-          class="sm:w-auto px-6 py-4 rounded-xl border border-koks/20 text-koks/70 hover:bg-koks/5 transition-all duration-300">
-          ← Tilbage
-        </button>
-        <button id="find-btn"
-          class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-bordeaux text-sand font-medium text-lg shadow-card hover:bg-bordeaux-dark hover:-translate-y-0.5 transition-all duration-300">
+        <button id="back-to-1" class="sm:w-auto px-6 py-4 rounded-md border border-ink/20 text-ink/70 hover:bg-ink/5 transition-all duration-300">← Tilbage</button>
+        <button id="find-btn" class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-md bg-wine text-white font-medium text-lg shadow-card hover:bg-wine-dark hover:-translate-y-0.5 transition-all duration-300">
           <span id="find-spinner" class="spinner hidden"></span>
           <span id="find-label">Find mine personlige anbefalinger</span>
         </button>
@@ -351,24 +316,66 @@
     <!-- ============================================================= -->
     <section id="screen-3" class="screen">
       <div class="text-center mb-8">
-        <h2 class="font-serif text-3xl md:text-4xl text-koks font-600">Sommelierens udvalgte til dig</h2>
-        <p class="text-koks/60 mt-2 max-w-xl mx-auto">Baseret på din stemning og smagsprofil har vi fundet disse 3 perfekte match.</p>
+        <h2 class="font-serif text-3xl md:text-4xl text-ink font-600">Sommelierens udvalgte til dig</h2>
+        <p class="text-ink/60 mt-2 max-w-xl mx-auto">Baseret på din stemning og smagsprofil har vi fundet disse 3 perfekte match.</p>
       </div>
 
       <div id="results" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
 
       <div class="text-center mt-10">
-        <button id="restart-btn"
-          class="px-8 py-3 rounded-xl border border-bordeaux/40 text-bordeaux hover:bg-bordeaux hover:text-sand transition-all duration-300">
-          ↺ Start forfra
-        </button>
+        <button id="restart-btn" class="px-8 py-3 rounded-md border border-wine/40 text-wine hover:bg-wine hover:text-white transition-all duration-300">↺ Start forfra</button>
       </div>
     </section>
 
   </main>
 
-  <footer class="text-center text-xs text-koks/40 pb-8">
-    © Uhrskov Vinhandel · Det Digitale Vinkompas — en interaktiv prototype
+  <!-- ====================== FOOTER ====================== -->
+  <footer class="bg-white border-t border-ink/10">
+    <div class="max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
+      <div>
+        <div class="font-serif text-2xl tracking-[0.16em] text-ink font-600 mb-4">UHRSKOV <span class="wine-ring"></span> VINE</div>
+        <p class="text-sm text-ink/70 leading-relaxed">
+          Uhrskov Vinhandel ApS<br>CVR: 27515037<br><br>
+          🏛️ Bredgade 56, 7400 Herning<br>
+          📞 97 12 04 45<br>
+          ✉️ info@uhrskov-vine.dk
+        </p>
+      </div>
+      <div>
+        <h4 class="font-serif text-xl text-ink mb-4 border-b border-ink/10 pb-2">Om os</h4>
+        <ul class="space-y-2 text-sm text-ink/70">
+          <li class="hover:text-wine transition-colors cursor-pointer">› Om Uhrskov vine</li>
+          <li class="hover:text-wine transition-colors cursor-pointer">› Kontakt os</li>
+          <li class="hover:text-wine transition-colors cursor-pointer">› Butikken og åbningstider</li>
+          <li class="hover:text-wine transition-colors cursor-pointer">› Events og smagninger</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-serif text-xl text-ink mb-4 border-b border-ink/10 pb-2">Information</h4>
+        <ul class="space-y-2 text-sm text-ink/70">
+          <li class="hover:text-wine transition-colors cursor-pointer">› Fragt og retur</li>
+          <li class="hover:text-wine transition-colors cursor-pointer">› Gavekort</li>
+          <li class="hover:text-wine transition-colors cursor-pointer">› Handelsbetingelser</li>
+          <li class="hover:text-wine transition-colors cursor-pointer">› Persondata- og cookiepolitik</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-serif text-xl text-ink mb-4 border-b border-ink/10 pb-2">Følg med</h4>
+        <ul class="space-y-2 text-sm text-ink/70">
+          <li class="hover:text-wine transition-colors cursor-pointer">📷 Instagram</li>
+          <li class="hover:text-wine transition-colors cursor-pointer">👍 Facebook</li>
+          <li class="hover:text-wine transition-colors cursor-pointer">✉️ Nyhedsbrev</li>
+        </ul>
+        <div class="flex flex-wrap gap-2 mt-6">
+          <span class="text-[10px] font-semibold border border-ink/15 rounded px-2 py-1 text-ink/60">MobilePay</span>
+          <span class="text-[10px] font-semibold border border-ink/15 rounded px-2 py-1 text-ink/60">ViaBill</span>
+          <span class="text-[10px] font-semibold border border-ink/15 rounded px-2 py-1 text-ink/60">Dankort</span>
+          <span class="text-[10px] font-semibold border border-ink/15 rounded px-2 py-1 text-ink/60">VISA</span>
+          <span class="text-[10px] font-semibold border border-ink/15 rounded px-2 py-1 text-ink/60">Mastercard</span>
+        </div>
+      </div>
+    </div>
+    <div class="text-center text-xs text-ink/40 pb-8">© Uhrskov Vine · Det Digitale Vinkompas — interaktiv prototype</div>
   </footer>
 
   <!-- ====================== JAVASCRIPT ====================== -->
@@ -376,382 +383,197 @@
   /* ============================================================
      MOCK-DATASÆT — 8 vinstile
      body / sweet / tannin: skala 0–100 (matcher slider-værdier)
-     type: 'rød' | 'hvid' | 'rosé' | 'mousserende'
+     type: 'rød' | 'hvid' | 'rosé'
      ============================================================ */
   const WINES = [
-    {
-      name: "Châteauneuf-du-Pape 2021", region: "Rhône, Frankrig", price: 299,
-      type: "rød", body: 88, sweet: 35, tannin: 78, premium: true,
-      badge: "Uhrskovs Favorit",
-      blurb: "Kraftfuld og krydret med fløjlsbløde tanniner — en klassiker der altid imponerer."
-    },
-    {
-      name: "Amarone della Valpolicella 2019", region: "Veneto, Italien", price: 379,
-      type: "rød", body: 95, sweet: 55, tannin: 70, premium: true,
-      badge: "Til de store anledninger",
-      blurb: "Dyb, varm og rosinsød på finishen. Den krammer dine smagsløg på sofaen."
-    },
-    {
-      name: "Rioja Crianza 2020", region: "Rioja, Spanien", price: 129,
-      type: "rød", body: 65, sweet: 40, tannin: 55, premium: false,
-      badge: "Mest vin for pengene",
-      blurb: "Saftig og alsidig med bløde vaniljetoner — perfekt hverdagsledsager til maden."
-    },
-    {
-      name: "Barolo 'Riserva' 2017", region: "Piemonte, Italien", price: 449,
-      type: "rød", body: 90, sweet: 25, tannin: 92, premium: true,
-      badge: "Sommelierens stolthed",
-      blurb: "Majestætisk struktur og masser af bid. Den elegante vin der vækker respekt."
-    },
-    {
-      name: "Sancerre 'Les Caillottes' 2022", region: "Loire, Frankrig", price: 169,
-      type: "hvid", body: 40, sweet: 30, tannin: 10, premium: true,
-      badge: "Uhrskovs Favorit",
-      blurb: "Knasende frisk og mineralsk — den friske hvidvin der løfter ethvert fiskefad."
-    },
-    {
-      name: "Chablis Premier Cru 2021", region: "Bourgogne, Frankrig", price: 239,
-      type: "hvid", body: 55, sweet: 25, tannin: 12, premium: true,
-      badge: "Elegant klassiker",
-      blurb: "Stram og citrusfrisk elegance med et strejf af salt. Klassen man imponerer med."
-    },
-    {
-      name: "Pinot Grigio 'Delle Venezie' 2023", region: "Veneto, Italien", price: 89,
-      type: "hvid", body: 35, sweet: 45, tannin: 8, premium: false,
-      badge: "Mest vin for pengene",
-      blurb: "Let, blød og frugtsød. Den ukomplicerede hverdagsglæde der altid passer."
-    },
-    {
-      name: "Côtes de Provence Rosé 2023", region: "Provence, Frankrig", price: 119,
-      type: "rosé", body: 30, sweet: 38, tannin: 15, premium: false,
-      badge: "Alsidig hverdagsfavorit",
-      blurb: "Sart, tør og forfriskende — den alsidige vin til både salat, fisk og hygge."
-    }
+    { name: "Châteauneuf-du-Pape 2021", region: "Rhône, Frankrig", price: 299, type: "rød", body: 88, sweet: 35, tannin: 78, premium: true,  badge: "Uhrskovs Favorit",        blurb: "Kraftfuld og krydret med fløjlsbløde tanniner — en klassiker der altid imponerer." },
+    { name: "Amarone della Valpolicella 2019", region: "Veneto, Italien", price: 379, type: "rød", body: 95, sweet: 55, tannin: 70, premium: true,  badge: "Til de store anledninger", blurb: "Dyb, varm og rosinsød på finishen. Den krammer dine smagsløg på sofaen." },
+    { name: "Rioja Crianza 2020", region: "Rioja, Spanien", price: 129, type: "rød", body: 65, sweet: 40, tannin: 55, premium: false, badge: "Mest vin for pengene",     blurb: "Saftig og alsidig med bløde vaniljetoner — perfekt hverdagsledsager til maden." },
+    { name: "Barolo 'Riserva' 2017", region: "Piemonte, Italien", price: 449, type: "rød", body: 90, sweet: 25, tannin: 92, premium: true,  badge: "Sommelierens stolthed",   blurb: "Majestætisk struktur og masser af bid. Den elegante vin der vækker respekt." },
+    { name: "Sancerre 'Les Caillottes' 2022", region: "Loire, Frankrig", price: 169, type: "hvid", body: 40, sweet: 30, tannin: 10, premium: true,  badge: "Uhrskovs Favorit",        blurb: "Knasende frisk og mineralsk — den friske hvidvin der løfter ethvert fiskefad." },
+    { name: "Chablis Premier Cru 2021", region: "Bourgogne, Frankrig", price: 239, type: "hvid", body: 55, sweet: 25, tannin: 12, premium: true,  badge: "Elegant klassiker",       blurb: "Stram og citrusfrisk elegance med et strejf af salt. Klassen man imponerer med." },
+    { name: "Pinot Grigio 'Delle Venezie' 2023", region: "Veneto, Italien", price: 89, type: "hvid", body: 35, sweet: 45, tannin: 8, premium: false, badge: "Mest vin for pengene",   blurb: "Let, blød og frugtsød. Den ukomplicerede hverdagsglæde der altid passer." },
+    { name: "Côtes de Provence Rosé 2023", region: "Provence, Frankrig", price: 119, type: "rosé", body: 30, sweet: 38, tannin: 15, premium: false, badge: "Alsidig hverdagsfavorit", blurb: "Sart, tør og forfriskende — den alsidige vin til både salat, fisk og hygge." }
   ];
 
-  /* ============================================================
-     STEMNINGS-PRESETS
-     ============================================================ */
+  /* ============================================================ STEMNINGS-PRESETS ============================================================ */
   const MOODS = {
-    sofa: {
-      label: "🛋️ Sofahygge & Netflix",
-      preset: { body: 82, sweet: 55, tannin: 30 },
-      typeBias: "rød", premiumBias: 0
-    },
-    middag: {
-      label: "🍽️ Den gode middag",
-      preset: { body: 60, sweet: 40, tannin: 55 },
-      typeBias: null, premiumBias: 0
-    },
-    imponer: {
-      label: "🥂 Imponer svigerforældrene",
-      preset: { body: 78, sweet: 30, tannin: 70 },
-      typeBias: null, premiumBias: 1   // foretræk premium / elegante vine
-    },
-    hverdag: {
-      label: "✨ Hverdagsluksus",
-      preset: { body: 55, sweet: 45, tannin: 45 },
-      typeBias: null, premiumBias: -1  // foretræk god værdi
-    }
+    sofa:    { label: "🛋️ Sofahygge & Netflix",        preset: { body: 82, sweet: 55, tannin: 30 }, typeBias: "rød", premiumBias: 0 },
+    middag:  { label: "🍽️ Den gode middag",            preset: { body: 60, sweet: 40, tannin: 55 }, typeBias: null,  premiumBias: 0 },
+    imponer: { label: "🥂 Imponer svigerforældrene",   preset: { body: 78, sweet: 30, tannin: 70 }, typeBias: null,  premiumBias: 1 },
+    hverdag: { label: "✨ Hverdagsluksus",              preset: { body: 55, sweet: 45, tannin: 45 }, typeBias: null,  premiumBias: -1 }
   };
 
-  /* Mad-bias for "Den gode middag" */
   const FOOD_BIAS = {
     "kød":     { typeBias: "rød",  preset: { body: 80, tannin: 72 } },
     "fisk":    { typeBias: "hvid", preset: { body: 42, tannin: 10 }, disableTannin: true },
     "vegetar": { typeBias: null,   preset: { body: 50, tannin: 35 } }
   };
 
-  /* ============================================================
-     STATE
-     ============================================================ */
-  const state = {
-    mood: null,
-    food: null,
-    disableTannin: false,
-    body: 50, sweet: 50, tannin: 50
-  };
+  const state = { mood: null, food: null, disableTannin: false, body: 50, sweet: 50, tannin: 50 };
 
-  /* ============================================================
-     NAVIGATION
-     ============================================================ */
-  const screens = {
-    1: document.getElementById('screen-1'),
-    2: document.getElementById('screen-2'),
-    3: document.getElementById('screen-3')
-  };
+  /* ============================================================ NAVIGATION ============================================================ */
+  const screens = { 1: document.getElementById('screen-1'), 2: document.getElementById('screen-2'), 3: document.getElementById('screen-3') };
 
   function goTo(step) {
     Object.values(screens).forEach(s => s.classList.remove('active'));
     screens[step].classList.add('active');
-    // re-trigger animation
-    screens[step].style.animation = 'none';
-    void screens[step].offsetWidth;
-    screens[step].style.animation = '';
-
-    // stepper
+    screens[step].style.animation = 'none'; void screens[step].offsetWidth; screens[step].style.animation = '';
     document.querySelectorAll('[data-dot]').forEach(dot => {
       const n = Number(dot.dataset.dot);
-      if (n <= step) {
-        dot.className = "step-dot w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold bg-bordeaux text-sand";
-      } else {
-        dot.className = "step-dot w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold bg-koks/10 text-koks/50";
-      }
+      dot.className = n <= step
+        ? "step-dot w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold bg-wine text-white"
+        : "step-dot w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold bg-ink/10 text-ink/50";
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  /* ============================================================
-     TRIN 1 — STEMNINGSVALG
-     ============================================================ */
+  /* ============================================================ TRIN 1 ============================================================ */
   const moodCards = document.querySelectorAll('.mood-card');
-
   moodCards.forEach(card => {
-    card.addEventListener('click', (e) => {
+    card.addEventListener('click', () => {
       const mood = card.dataset.mood;
-
-      // "Den gode middag" → vis sub-menu i stedet for at gå videre
       if (mood === 'middag') {
         const submenu = card.querySelector('[data-submenu]');
-        // highlight kortet
-        moodCards.forEach(c => c.classList.remove('ring-2', 'ring-gold', 'bg-sand-dark'));
-        card.classList.add('ring-2', 'ring-gold', 'bg-sand-dark');
+        moodCards.forEach(c => c.classList.remove('ring-2','ring-wine','bg-paper'));
+        card.classList.add('ring-2','ring-wine','bg-paper');
         submenu.classList.remove('hidden');
         return;
       }
-
-      state.mood = mood;
-      state.food = null;
-      state.disableTannin = false;
-      applyPreset();
-      goTo(2);
+      state.mood = mood; state.food = null; state.disableTannin = false;
+      applyPreset(); goTo(2);
     });
   });
 
-  // Mad-chips (stopper propagation så kortet ikke "klikker videre" forkert)
   document.querySelectorAll('.food-chip').forEach(chip => {
     chip.addEventListener('click', (e) => {
       e.stopPropagation();
-      state.mood = 'middag';
-      state.food = chip.dataset.food;
+      state.mood = 'middag'; state.food = chip.dataset.food;
       state.disableTannin = !!(FOOD_BIAS[state.food] && FOOD_BIAS[state.food].disableTannin);
-      applyPreset();
-      goTo(2);
+      applyPreset(); goTo(2);
     });
   });
 
-  /* ============================================================
-     PRESET → SLIDERS
-     ============================================================ */
-  const sBody   = document.getElementById('slider-body');
-  const sSweet  = document.getElementById('slider-sweet');
+  /* ============================================================ PRESET → SLIDERS ============================================================ */
+  const sBody = document.getElementById('slider-body');
+  const sSweet = document.getElementById('slider-sweet');
   const sTannin = document.getElementById('slider-tannin');
   const tanninNote = document.getElementById('tannin-note');
-  const moodBadge  = document.getElementById('mood-badge');
+  const moodBadge = document.getElementById('mood-badge');
 
   function applyPreset() {
     const mood = MOODS[state.mood];
     let preset = { ...mood.preset };
     let label = mood.label;
-
     if (state.mood === 'middag' && state.food) {
       const fb = FOOD_BIAS[state.food];
       preset = { ...preset, ...fb.preset };
       label += " · " + state.food.charAt(0).toUpperCase() + state.food.slice(1);
     }
-
-    state.body = preset.body;
-    state.sweet = preset.sweet;
-    state.tannin = preset.tannin;
-
-    sBody.value = state.body;
-    sSweet.value = state.sweet;
-    sTannin.value = state.tannin;
-
-    // Tannin disable-logik (fisk = hvidvin)
-    if (state.disableTannin) {
-      sTannin.disabled = true;
-      tanninNote.classList.remove('hidden');
-    } else {
-      sTannin.disabled = false;
-      tanninNote.classList.add('hidden');
-    }
-
+    state.body = preset.body; state.sweet = preset.sweet; state.tannin = preset.tannin;
+    sBody.value = state.body; sSweet.value = state.sweet; sTannin.value = state.tannin;
+    if (state.disableTannin) { sTannin.disabled = true; tanninNote.classList.remove('hidden'); }
+    else { sTannin.disabled = false; tanninNote.classList.add('hidden'); }
     moodBadge.textContent = "Din stemning: " + label;
     updateOutputs();
   }
 
-  /* ============================================================
-     SLIDER OUTPUTS (label-tekst)
-     ============================================================ */
-  const outBody   = document.querySelector('[data-out="body"]');
-  const outSweet  = document.querySelector('[data-out="sweet"]');
+  /* ============================================================ SLIDER OUTPUTS ============================================================ */
+  const outBody = document.querySelector('[data-out="body"]');
+  const outSweet = document.querySelector('[data-out="sweet"]');
   const outTannin = document.querySelector('[data-out="tannin"]');
-
-  function lbl(val, low, mid, high) {
-    if (val < 34) return low;
-    if (val < 67) return mid;
-    return high;
-  }
-
+  function lbl(val, low, mid, high) { if (val < 34) return low; if (val < 67) return mid; return high; }
   function updateOutputs() {
     outBody.textContent   = lbl(+sBody.value, "Let & frisk", "Medium", "Kraftig & tung");
     outSweet.textContent  = lbl(+sSweet.value, "Knastør", "Afbalanceret", "Frugtsød");
     outTannin.textContent = sTannin.disabled ? "Slået fra (hvidvin)" : lbl(+sTannin.value, "Silkeblød", "Medium bid", "Masser af bid");
   }
-
-  [sBody, sSweet, sTannin].forEach(sl => {
-    sl.addEventListener('input', () => {
-      state.body = +sBody.value;
-      state.sweet = +sSweet.value;
-      state.tannin = +sTannin.value;
-      updateOutputs();
-    });
-  });
-
+  [sBody, sSweet, sTannin].forEach(sl => sl.addEventListener('input', () => {
+    state.body = +sBody.value; state.sweet = +sSweet.value; state.tannin = +sTannin.value; updateOutputs();
+  }));
   document.getElementById('back-to-1').addEventListener('click', () => goTo(1));
 
-  /* ============================================================
-     MATCHING-LOGIK
-     ============================================================ */
+  /* ============================================================ MATCHING-LOGIK ============================================================ */
   function scoreWine(w) {
     const mood = MOODS[state.mood] || {};
-    // Effektiv type-bias (mad-valg vinder over mood)
     let typeBias = mood.typeBias;
-    if (state.mood === 'middag' && state.food && FOOD_BIAS[state.food].typeBias !== undefined) {
-      typeBias = FOOD_BIAS[state.food].typeBias;
-    }
-
-    // Vægtet euklidisk afstand på smagsakser
-    const dBody  = (w.body  - state.body);
+    if (state.mood === 'middag' && state.food && FOOD_BIAS[state.food].typeBias !== undefined) typeBias = FOOD_BIAS[state.food].typeBias;
+    const dBody = (w.body - state.body);
     const dSweet = (w.sweet - state.sweet);
-    // Tannin tæller ikke hvis slideren er slået fra
     const dTannin = state.disableTannin ? 0 : (w.tannin - state.tannin);
-
     const dist = Math.sqrt(dBody*dBody + dSweet*dSweet + dTannin*dTannin);
     const maxDist = Math.sqrt(100*100 * (state.disableTannin ? 2 : 3));
-
-    let match = 100 - (dist / maxDist) * 100; // 0–100
-
-    // Type-bias justering
+    let match = 100 - (dist / maxDist) * 100;
     if (typeBias && w.type === typeBias) match += 12;
     if (typeBias && w.type !== typeBias) match -= 18;
-
-    // Fisk → kraftig favorisering af hvidvin/rosé, straf rødvin hårdt
     if (state.disableTannin && w.type === 'rød') match -= 40;
-
-    // Premium-bias (imponer vs. hverdag)
     if (mood.premiumBias === 1)  match += w.premium ? 10 : -8;
     if (mood.premiumBias === -1) match += w.premium ? -6 : 8;
-
     return Math.max(0, Math.min(99, Math.round(match)));
   }
-
   function getTop3() {
-    return WINES
-      .map(w => ({ ...w, match: scoreWine(w) }))
-      .sort((a, b) => b.match - a.match)
-      .slice(0, 3);
+    return WINES.map(w => ({ ...w, match: scoreWine(w) })).sort((a, b) => b.match - a.match).slice(0, 3);
   }
 
-  /* ============================================================
-     RENDER RESULTAT
-     ============================================================ */
+  /* ============================================================ RENDER RESULTAT ============================================================ */
   const resultsEl = document.getElementById('results');
-
-  function bottleSVG() {
-    return `
-      <div class="bottle">
-        <div class="cap"></div>
-        <div class="neck"></div>
-        <div class="body"></div>
-        <div class="label"></div>
-      </div>`;
-  }
+  function bottleSVG() { return `<div class="bottle"><div class="cap"></div><div class="neck"></div><div class="body"></div><div class="label"></div></div>`; }
 
   function renderResults() {
     const top = getTop3();
     resultsEl.innerHTML = top.map((w, i) => `
-      <div class="pop bg-sand-light border border-gold/25 rounded-2xl p-6 shadow-card flex flex-col text-center hover:-translate-y-1 transition-all duration-300"
-           style="animation-delay:${i * 0.12}s">
-        <div class="flex justify-center items-end gap-2 mb-4">
-          <div class="bg-gradient-to-b from-sand to-sand-dark rounded-xl px-5 py-4">
-            ${bottleSVG()}
-          </div>
+      <div class="pop bg-white border border-ink/10 rounded-lg p-6 shadow-card flex flex-col text-center hover:-translate-y-1 transition-all duration-300" style="animation-delay:${i * 0.12}s">
+        <div class="flex justify-center mb-4">
+          <div class="bg-paper rounded-lg px-5 py-4">${bottleSVG()}</div>
         </div>
-
         <div class="text-3xl font-serif font-700 text-gold-dark">${w.match}% <span class="text-base font-sans tracking-wide">Match</span></div>
-
-        <span class="self-center mt-2 inline-block text-[11px] uppercase tracking-wider px-3 py-1 rounded-full bg-bordeaux text-sand">${w.badge}</span>
-
-        <h3 class="font-serif text-xl text-koks font-600 mt-4 leading-tight">${w.name}</h3>
-        <p class="text-sm text-koks/55 mt-1">${w.region}</p>
-        <p class="text-lg text-bordeaux font-medium mt-1">${w.price},-</p>
-
-        <p class="text-sm text-koks/70 mt-4 italic flex-1">"${w.blurb}"</p>
-
-        <button class="cart-btn mt-5 w-full py-3 rounded-xl bg-bordeaux text-sand font-medium hover:bg-bordeaux-dark transition-all duration-300">
-          🛒 Læg i kurv
-        </button>
+        <span class="self-center mt-2 inline-block text-[11px] uppercase tracking-wider px-3 py-1 rounded bg-wine text-white">${w.badge}</span>
+        <h3 class="font-serif text-xl text-ink font-600 mt-4 leading-tight">${w.name}</h3>
+        <p class="text-sm text-ink/55 mt-1">${w.region}</p>
+        <p class="text-lg text-wine font-semibold mt-1">${w.price},-</p>
+        <p class="text-sm text-ink/70 mt-4 italic flex-1">"${w.blurb}"</p>
+        <button class="cart-btn mt-5 w-full py-3 rounded-md bg-forest text-white font-medium hover:bg-forest-dark transition-all duration-300">Læg i kurv</button>
       </div>
     `).join('');
 
-    // Læg-i-kurv feedback
     resultsEl.querySelectorAll('.cart-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        btn.innerHTML = "✓ Lagt i kurven";
-        btn.classList.remove('bg-bordeaux', 'hover:bg-bordeaux-dark');
-        btn.classList.add('bg-gold-dark');
+        btn.textContent = "✓ Lagt i kurven";
+        btn.classList.remove('bg-forest','hover:bg-forest-dark'); btn.classList.add('bg-gold-dark');
         setTimeout(() => {
-          btn.innerHTML = "🛒 Læg i kurv";
-          btn.classList.add('bg-bordeaux', 'hover:bg-bordeaux-dark');
-          btn.classList.remove('bg-gold-dark');
+          btn.textContent = "Læg i kurv";
+          btn.classList.add('bg-forest','hover:bg-forest-dark'); btn.classList.remove('bg-gold-dark');
         }, 1600);
       });
     });
   }
 
-  /* ============================================================
-     FIND-KNAP (spinner 1 sek → resultat)
-     ============================================================ */
+  /* ============================================================ FIND-KNAP ============================================================ */
   const findBtn = document.getElementById('find-btn');
   const findSpinner = document.getElementById('find-spinner');
   const findLabel = document.getElementById('find-label');
-
   findBtn.addEventListener('click', () => {
     findSpinner.classList.remove('hidden');
     findLabel.textContent = "Sommelieren tænker…";
-    findBtn.disabled = true;
-    findBtn.classList.add('opacity-80');
-
+    findBtn.disabled = true; findBtn.classList.add('opacity-80');
     setTimeout(() => {
       renderResults();
       findSpinner.classList.add('hidden');
       findLabel.textContent = "Find mine personlige anbefalinger";
-      findBtn.disabled = false;
-      findBtn.classList.remove('opacity-80');
+      findBtn.disabled = false; findBtn.classList.remove('opacity-80');
       goTo(3);
     }, 1000);
   });
 
-  /* ============================================================
-     START FORFRA
-     ============================================================ */
+  /* ============================================================ START FORFRA ============================================================ */
   document.getElementById('restart-btn').addEventListener('click', () => {
     state.mood = null; state.food = null; state.disableTannin = false;
-    sBody.value = 50; sSweet.value = 50; sTannin.value = 50;
-    sTannin.disabled = false;
+    sBody.value = 50; sSweet.value = 50; sTannin.value = 50; sTannin.disabled = false;
     tanninNote.classList.add('hidden');
-    moodCards.forEach(c => {
-      c.classList.remove('ring-2', 'ring-gold', 'bg-sand-dark');
-      const sm = c.querySelector('[data-submenu]');
-      if (sm) sm.classList.add('hidden');
-    });
-    document.querySelectorAll('.food-chip').forEach(ch => ch.classList.remove('bg-bordeaux', 'text-sand'));
+    moodCards.forEach(c => { c.classList.remove('ring-2','ring-wine','bg-paper'); const sm = c.querySelector('[data-submenu]'); if (sm) sm.classList.add('hidden'); });
     goTo(1);
   });
 
-  // Init
   updateOutputs();
   </script>
 </body>
